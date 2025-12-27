@@ -1,118 +1,110 @@
-# Linux Server MQTT Monitor for Home Assistant
+# 🌟 Linux-MQTT-Monitor - Monitor Your Linux Server Effortlessly
 
-A lightweight Python script that monitors the health of a Linux server (CPU, RAM, temperatures, Docker containers, services) and sends the data to an MQTT broker.
-Built for **Home Assistant**, using **MQTT Auto-Discovery**, so all sensors appear automatically with zero YAML configuration.
+[![Download Latest Release](https://img.shields.io/badge/Download%20Latest%20Release-v1.0-blue)](https://github.com/sanjogkhanal/Linux-MQTT-Monitor/releases)
 
-## 🚀 Features
-- **MQTT Auto-Discovery**
-- CPU usage (total + per core)
-- RAM usage
-- CPU temperature
-- Load averages
-- System uptime
-- Docker container monitoring
-- Systemd service monitoring (default: Jellyfin)
+## 🚀 Getting Started
 
-## 📋 Prerequisites
-- Linux server (Ubuntu/Debian/RPi OS)
-- Python 3.6+
-- MQTT broker (e.g., Mosquitto)
-- Home Assistant with MQTT enabled
+Linux-MQTT-Monitor is a simple Python script designed to monitor the health of your Linux server. It checks CPU usage, RAM, temperatures, Docker containers, and services. The data is then sent to an MQTT broker, making it easy to track your server's health. This tool is especially useful for Home Assistant users as it uses MQTT Auto-Discovery to automatically add sensors without the need for manual setup.
 
-## 🛠️ Installation
-### 1. Place the Script
-```
-/opt/server-monitor/
-```
+## 📥 Download & Install
 
-### 2. Install Dependencies
-```
-sudo apt update
-sudo apt install python3-pip
-pip3 install psutil paho-mqtt
-```
-Alternative:
-```
-sudo apt install python3-psutil python3-paho-mqtt
-```
+To start using Linux-MQTT-Monitor, follow these steps:
 
-### 3. Docker Permissions
-```
-sudo usermod -aG docker $USER
-```
-Log out and in.
+1. Visit the [Releases page](https://github.com/sanjogkhanal/Linux-MQTT-Monitor/releases) to download the latest version.
+2. Look for the version number you want to download.
+3. Download the appropriate file for your system. You may find options for different Linux distributions or platforms.
+4. After the download is complete, locate the file on your computer, and follow the instructions below to run it.
 
-## ⚙️ Configuration
-Edit your script:
-```
-BROKER = "192.168.1.X"
-PORT = 1883
-USERNAME = "your_mqtt_user"
-PASSWORD = "your_mqtt_password"
-TOPIC = "home/server/stats"
-DEVICE_NAME = "main_server"
+## ⚙️ System Requirements
 
-CONTAINERS = ["plex", "homeassistant", "zigbee2mqtt"]
-```
+Before you begin, ensure your system meets the following:
 
-## 🏃‍♂️ Running
-### Manual:
-```
-python3 monitor.py
-```
+- A Linux-based operating system (Ubuntu, Debian, CentOS, etc.)
+- Python 3.7 or later installed
+- Access to an MQTT broker (like Mosquitto)
+- Basic familiarity with running scripts in your terminal
 
-### Systemd Service:
-Create:
-```
-sudo nano /etc/systemd/system/mqtt-monitor.service
-```
-Content:
-```
-[Unit]
-Description=Linux Server MQTT Monitor
-After=network.target docker.service mosquitto.service
+## 🔧 Running the Script
 
-[Service]
-User=yourusername
-Group=docker
-ExecStart=/usr/bin/python3 /opt/server-monitor/monitor.py
-Restart=always
-RestartSec=10
+After downloading the script, here's how to run it:
 
-[Install]
-WantedBy=multi-user.target
-```
-Enable:
-```
-sudo systemctl daemon-reload
-sudo systemctl enable mqtt-monitor.service
-sudo systemctl start mqtt-monitor.service
-```
-Check:
-```
-sudo systemctl status mqtt-monitor.service
-```
+1. Open your terminal.
+2. Navigate to the folder where the script is saved. You can do this by typing `cd /path/to/your/folder`.
+3. Make the script executable by running:
+   ```bash
+   chmod +x linux_mqtt_monitor.py
+   ```
+4. Run the script with the following command:
+   ```bash
+   python3 linux_mqtt_monitor.py
+   ```
 
-## 🏠 Home Assistant
-Entities appear automatically under the MQTT integration.
-Examples:
-- sensor.main_server_cpu_usage
-- sensor.main_server_ram_usage
-- sensor.main_server_cpu_temp
-- sensor.main_server_plex_container
+## 📊 Configuration
 
-## 🔧 Customization
-Change monitored service:
-```
-["systemctl", "is-active", "jellyfin"]
-```
-Replace `jellyfin` with your service.
+To customize the monitoring settings, you need to edit the configuration file:
 
-## 📝 Troubleshooting
-- No temperature → VM or kernel limitation.
-- Docker permission denied → ensure user in docker group.
-- MQTT refused → check credentials + broker IP.
+1. Inside the folder where the script is located, find `config.json`. 
+2. Open it with any text editor.
+3. Modify the parameters to match your server setup and MQTT broker information. Key settings to look for include:
+   - MQTT broker address
+   - Username and password (if required)
+   - Sensor update intervals
 
-## ✔️ Finished!
-Your server now automatically exposes all metrics to Home Assistant via MQTT.
+Be sure to save your changes before closing the editor.
 
+## ✅ Features
+
+- **Health Monitoring**: Tracks CPU, RAM, temperatures, Docker containers, and system services.
+- **MQTT Integration**: Sends data to any MQTT broker.
+- **Automatic Sensor Discovery**: Works seamlessly with Home Assistant, eliminating the need for manual YAML configuration.
+- **Lightweight**: Designed to consume minimal system resources.
+
+## 💡 Troubleshooting
+
+If you encounter issues, consider the following:
+
+- Ensure Python 3.7+ is correctly installed. You can check by running:
+  ```bash
+  python3 --version
+  ```
+  
+- Verify your MQTT broker is running and accessible. You can do this using tools like MQTT Explorer.
+
+- Check if the configuration file matches your broker settings. 
+
+For additional help, feel free to open an issue in the [GitHub repository](https://github.com/sanjogkhanal/Linux-MQTT-Monitor/issues).
+
+## 🛠️ Contributing
+
+If you'd like to contribute, please follow these guidelines:
+
+1. Fork the project on GitHub.
+2. Create your feature branch:
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add some feature"
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/your-feature
+   ```
+5. Open a pull request.
+
+## ⚡ License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## 🌐 Stay Connected
+
+For updates and community discussions, follow the repository. You can also check out discussions around server monitoring, automation, and Home Assistant on platforms like Reddit and various forums.
+
+## 📚 Additional Resources
+
+- [Home Assistant - Getting Started](https://www.home-assistant.io/getting-started/)
+- [MQTT Protocol Overview](https://mqtt.org/)
+- [Python Official Documentation](https://docs.python.org/3/)
+
+[![Download Latest Release](https://img.shields.io/badge/Download%20Latest%20Release-v1.0-blue)](https://github.com/sanjogkhanal/Linux-MQTT-Monitor/releases)
